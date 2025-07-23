@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수능 경제학 핵심 그래프 완전정복</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 25px;
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            border-radius: 15px;
+            color: white;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .graph-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .graph-title {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border-radius: 10px;
+        }
+        
+        .graph-container {
+            position: relative;
+            height: 500px;
+            margin: 30px 0;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            background: linear-gradient(45deg, #4ECDC4, #44A08D);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .control-btn.active {
+            background: linear-gradient(45deg, #FF6B6B, #FF8E53);
+        }
+        
+        .explanation {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #4ECDC4;
+        }
+        
+        .formula-box {
+            background: linear-gradient(45deg, #a8edea 0%, #fed6e3 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .concept-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            border: 2px solid #e3f2fd;
+            transition: all 0.3s ease;
+        }
+        
+        .concept-card:hover {
+            border-color: #4ECDC4;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-title {
+            color: #FF6B6B;
+            font-weight: bold;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .data-table th {
+            background: linear-gradient(45deg, #4ECDC4, #44A08D);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .data-table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .data-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📈 수능 경제학 핵심 그래프 완전정복</h1>
+            <p style="margin: 15px 0 0 0; font-size: 1.2em;">정확한 그래프로 경제 원리를 완벽하게 이해하자!</p>
+        </div>
+
+        <!-- 기본 수요공급 그래프 -->
+        <div class="graph-section">
+            <div class="graph-title">📊 1. 기본 수요공급 균형 그래프</div>
+            
+            <div class="controls">
+                <button class="control-btn active" onclick="showBasicEquilibrium()">기본 균형</button>
+                <button class="control-btn" onclick="showDemandIncrease()">수요 증가</button>
+                <button class="control-btn" onclick="showSupplyIncrease()">공급 증가</button>
+                <button class="control-btn" onclick="showSurplusAnalysis()">잉여 분석</button>
+            </div>
+            
+            <div class="graph-container">
+                <canvas id="supplyDemandChart"></canvas>
+            </div>
+            
+            <div class="explanation" id="explanation1">
+                <strong>🎯 기본 균형점:</strong> 수요곡선과 공급곡선이 만나는 지점에서 <span class="highlight">시장청산</span>이 일어납니다. 
+                이 지점에서 수요량 = 공급량이 되어 초과수요도 초과공급도 없는 상태가 됩니다.
+            </div>
+        </div>
+
+        <!-- 물품세 부과 효과 그래프 -->
+        <div class="graph-section">
+            <div class="graph-title">💰 2. 물품세 부과 효과 분석</div>
+            
+            <div class="controls">
+                <button class="control-btn active" onclick="showTaxEffect('none')">세금 없음</button>
+                <button class="control-btn" onclick="showTaxEffect('low')">저율 과세</button>
+                <button class="control-btn" onclick="showTaxEffect('high')">고율 과세</button>
+                <button class="control-btn" onclick="showDeadWeight()">순손실 분석</button>
+            </div>
+            
+            <div class="graph-container">
+                <canvas id="taxChart"></canvas>
+            </div>
+            
+            <div class="explanation" id="explanation2">
+                <strong>🔍 물품세 효과:</strong> 세금 부과 시 공급곡선이 세액만큼 위로 이동합니다. 
+                소비자 부담가격은 상승하고, 생산자 수취가격은 하락하며, <span class="highlight">경제적 순손실</span>이 발생합니다.
+            </div>
+        </div>
+
+        <!-- 탄력성 비교 그래프 -->
+        <div class="graph-section">
+            <div class="graph-title">📏 3. 가격 탄력성 비교 분석</div>
+            
+            <div class="controls">
+                <button class="control-btn active" onclick="showElasticity('elastic')">탄력적 수요</button>
+                <button class="control-btn" onclick="showElasticity('inelastic')">비탄력적 수요</button>
+                <button class="control-btn" onclick="showElasticity('comparison')">탄력성 비교</button>
+            </div>
+            
+            <div class="graph-container">
+                <canvas id="elasticityChart"></canvas>
+            </div>
+            
+            <div class="explanation" id="explanation3">
+                <strong>⚖️ 탄력성과 조세 부담:</strong> <span class="highlight">탄력성이 낮을수록</span> 조세 부담이 큽니다. 
+                필수품(비탄력적)은 소비자가, 사치품(탄력적)은 생산자가 더 많은 세금을 부담하게 됩니다.
+            </div>
+        </div>
+
+        <!-- 핵심 개념 정리 -->
+        <div class="grid-container">
+            <div class="concept-card">
+                <div class="card-title">🎯 균형점의 특성</div>
+                <ul style="text-align: left; line-height: 1.8;">
+                    <li><strong>수요량 = 공급량</strong></li>
+                    <li>초과수요와 초과공급이 모두 0</li>
+                    <li>시장청산 상태 달성</li>
+                    <li>파레토 효율적 자원배분</li>
+                    <li>사회적 총잉여 극대화</li>
+                </ul>
+            </div>
+            
+            <div class="concept-card">
+                <div class="card-title">💰 잉여 계산 공식</div>
+                <div class="formula-box">
+                    소비자잉여 = ½ × 수량 × (최고지불의향가격 - 균형가격)<br><br>
+                    생산자잉여 = ½ × 수량 × (균형가격 - 최저수용가격)<br><br>
+                    총 사회잉여 = 소비자잉여 + 생산자잉여
+                </div>
+            </div>
+            
+            <div class="concept-card">
+                <div class="card-title">📉 순손실의 의미</div>
+                <ul style="text-align: left; line-height: 1.8;">
+                    <li>조세로 인한 거래량 감소 효과</li>
+                    <li>사회적 총잉여의 순감소분</li>
+                    <li>경제적 비효율성의 척도</li>
+                    <li>시장 개입의 사회적 비용</li>
+                    <li>삼각형 면적으로 계산</li>
+                </ul>
+            </div>
+            
+            <div class="concept-card">
+                <div class="card-title">⚖️ 조체의 경제적 기능</div>
+                <ul style="text-align: left; line-height: 1.8;">
+                    <li>정보 비대칭성 해소</li>
+                    <li>거래비용 절감 효과</li>
+                    <li>시장 효율성 향상</li>
+                    <li>가격 발견 기능 수행</li>
+                    <li>리스크 분산 역할</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 실전 데이터 테이블 -->
+        <div class="graph-section">
+            <div class="graph-title">📋 실전 계산 예시</div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>세금 부과 전</th>
+                        <th>세금 부과 후</th>
+                        <th>변화량</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>균형가격</strong></td>
+                        <td>1,000원</td>
+                        <td>1,200원 (소비자)</td>
+                        <td>+200원</td>
+                    </tr>
+                    <tr>
+                        <td><strong>생산자 수취가격</strong></td>
+                        <td>1,000원</td>
+                        <td>800원</td>
+                        <td>-200원</td>
+                    </tr>
+                    <tr>
+                        <td><strong>균형수량</strong></td>
+                        <td>500개</td>
+                        <td>400개</td>
+                        <td>-100개</td>
+                    </tr>
+                    <tr>
+                        <td><strong>소비자잉여</strong></td>
+                        <td>125,000원</td>
+                        <td>80,000원</td>
+                        <td>-45,000원</td>
+                    </tr>
+                    <tr>
+                        <td><strong>생산자잉여</strong></td>
+                        <td>125,000원</td>
+                        <td>80,000원</td>
+                        <td>-45,000원</td>
+                    </tr>
+                    <tr style="background-color: #ffebee;">
+                        <td><strong>순손실</strong></td>
+                        <td>0원</td>
+                        <td>20,000원</td>
+                        <td>+20,000원</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // 차트 변수들
+        let chart1, chart2, chart3;
+        
+        // 차트 색상 팔레트
+        const colors = {
+            demand: '#FF6B6B',
+            supply: '#4ECDC4',
+            demandAfter: '#FF8E53',
+            supplyAfter: '#51CF66',
+            tax: '#845EC2',
+            surplus: 'rgba(255, 107, 107, 0.3)',
+            deadweight: 'rgba(132, 94, 194, 0.3)'
+        };
+
+        // 1. 기본 수요공급 그래프
+        function initSupplyDemandChart() {
+            const ctx = document.getElementById('supplyDemandChart').getContext('2d');
+            
+            chart1 = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 11}, (_, i) => i * 100),
+                    datasets: [
+                        {
+                            label: '수요곡선 (D)',
+                            data: [2000, 1800, 1600, 1400, 1200, 1000, 800, 600, 400, 200, 0],
+                            borderColor: colors.demand,
+                            backgroundColor: 'transparent',
+                            borderWidth: 4,
+                            pointRadius: 0,
+                            tension: 0
+                        },
+                        {
+                            label: '공급곡선 (S)',
+                            data: [0, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000],
+                            borderColor: colors.supply,
+                            backgroundColor: 'transparent',
+                            borderWidth: 4,
+                            pointRadius: 0,
+                            tension: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function(context) {
+                                    return '수량: ' + context[0].label + '개';
+                                },
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y + '원';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: '수량 (개)',
+                                font: {
+                                    size: 16,
+                                    weight: 'bold'
+                                }
+                            },
+                            grid: {
+                                color: '#e0e0e0'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: '가격 (원)',
+                                font: {
+                                    size: 16,
+                                    weight: 'bold'
+                                }
+                            },
+                            grid: {
+                                color: '#e0e0e0'
+                            },
+                            min: 0,
+                            max: 2000
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    }
+                }
+            });
+        }
+
+        // 2. 물품세 차트
+        function initTaxChart() {
+            const ctx = document.getElementById('taxChart').getContext('2d');
+            
+            const demandData = [2000, 1800, 1600, 1400, 1200, 1000, 800, 600, 400, 200, 0];
+            const supplyData = [0, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000];
+            
+            chart2 = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 11}, (_, i) => i * 100),
+                    datasets: [
+                        {
+                            label: '수요곡선 (D)',
+                            data: demandData,
+                            borderColor: colors.demand,
+                            backgroundColor: 'transparent',
+                            borderWidth: 4,
+                            pointRadius: 0,
+                            tension: 0
+                        },
+                        {
+                            label: '공급곡선 (S₀)',
+                            data: supplyData,
+                            borderColor: colors.supply,
+                            backgroundColor: 'transparent',
+                            borderWidth: 4,
+                            pointRadius: 0,
+                            tension: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: '수량 (개)',
+                                font: {
+                                    size: 16,
+                                    weight: 'bold'
+                                }
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: '가격 (원)',
+                                font: {
+                                    size: 16,
+                                    weight: 'bold'
+                                }
+                            },
+                            min: 0,
+                            max: 2000
+                        }
+                    }
+                }
+            });
+        }
+
+        // 3. 탄력성 차트
+        function initElasticityChart() {
+            const ctx = document.getElementById('elasticityChart').getContext('2d');
+            
+            chart3 = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 11}, (_, i) => i * 100),
+                    datasets: [
+                        {
+                            label: '탄력적 수요',
+                            data: [2000, 1600, 1200, 800, 400, 0, 0, 0, 0, 0, 0],
+                            borderColor: colors.demand,
+                            backgroundColor: 'transparent',
+                            borderWidth: 4,
+                            pointRadius: 0,
+                            tension: 0
+                        },
+                        {
+                            label: '공급곡선',
+                            data: [0, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000],
+                            borderColor: colors.supply,
+                            backgroundColor: 'transparent',
+                            borderWidth: 4,
+                            pointRadius: 0,
+                            tension: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: '수량 (개)',
+                                font: {
+                                    size: 16,
+                                    weight: 'bold'
+                                }
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: '가격 (원)',
+                                font: {
+                                    size: 16,
+                                    weight: 'bold'
+                                }
+                            },
+                            min: 0,
+                            max: 2000
+                        }
+                    }
+                }
+            });
+        }
+
+        // 버튼 활성화 함수
+        function setActiveButton(parentElement, activeButton) {
+            const buttons = parentElement.querySelectorAll('.control-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            activeButton.classList.add('active');
+        }
+
+        // 1. 수요공급 그래프 조작 함수들
+        function showBasicEquilibrium() {
+            setActiveButton(document.querySelector('.graph-section'), event.target);
+            
+            chart1.data.datasets = [
+                {
+                    label: '수요곡선 (D)',
+                    data: [2000, 1800, 1600, 1400, 1200, 1000, 800, 600, 400, 200, 0],
+                    borderColor: colors.demand,
+                    backgroundColor: 'transparent',
+                    borderWidth: 4,
+                    pointRadius: 0,
+                    tension: 0
+                },
+                {
+                    label: '공급곡선 (S)',
+                    data: [0, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000],
+                    borderColor: colors.supply,
+                    backgroundColor: 'transparent',
+                    borderWidth: 4,
+                    pointRadius: 0,
+                    tension: 0
+                }
+            ];
+            chart1.update();
+            
+            document.getElementById('explanation1').innerHTML = 
+                '<strong>🎯 기본 균형점:</strong> 수요곡선과 공급곡선이 만나는 지점(P=1000원, Q=500개)에서 <span class="highlight">시장청산</span>이 일어납니다.';
+        }
+
+        function showDemandIncrease() {
+            setActiveButton(document.querySelector('.graph-section'), event.target);
+            
+            chart1.data.datasets = [
+                {
+                    label: '수요곡선 (D₀)',
+                    data: [2000, 1800, 1600, 1400, 1200, 1000, 800, 600, 400, 200, 0],
+                    borderColor: colors.demand,
+                    backgroundColor: 'transparent',
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    tension: 0,
+                    borderDash: [5, 5]
+                },
+                {
+                    label: '수요곡선 (D₁) - 증가',
+                    data: [2400, 2200, 2000, 1800, 1600, 1400, 1200, 1000, 800, 600, 400],
+                    borderColor: colors.demandAfter,
+                    backgroundColor: 'transparent',
+                    borderWidth: 4,
+                    pointRadius: 0,
+                    tension: 0
+                },
+                {
+                    label: '공급곡선 (S)',
+                    data: [0, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000],
+                    borderColor: colors.supply,
+                    backgroundColor: 'transparent',
+                    borderWidth: 4,
+                    pointRadius: 0,
+                    tension: 0
+                }
+            ];
+            chart1.update();
+            
+            document.getElementById('explanation1').innerHTML = 
+                '<strong>📈 수요 증가 효과:</strong> 수요곡선이 우측으로 이동하면 <span class="highlight">가격↑, 수량↑</span> 현상이 발생합니다. 새로운 균형점은 (P=1200원, Q=600개)가 됩니다.';
+        }
+
+        function showSupplyIncrease() {
+            setActiveButton(document.querySelector('.graph-section'), event.target);
+            
+            chart1.data.datasets = [
+                {
+                    label: '수요곡선 (D)',
+                    data: [2000, 1800, 1600, 1400, 1200, 1000, 800, 600, 400, 200, 0],
+                    borderColor: colors.demand,
+                    backgroundColor: 'transparent',
+                    borderWidth: 4,
+                    pointRadius: 0,
+                    tension: 0
+                },
+                {
+                    label: '공급곡선 (S₀)',
+                    data: [0, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000],
+                    borderColor: colors.supply,
+                    backgroundColor: 'transparent',
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    tension: 0,
+                    borderDash: [5, 5]
+                },
+                {
+                    label: '공급곡선 (S₁) - 증가',
+                    data: [0, 0, 0, 200, 400, 600, 800, 1000, 1200, 1400, 1600],
+                    borderColor: colors.supplyAfter,
+                    backgroundColor: 'transparent',
+                    borderWidth: 4,
+                    pointRadius: 0,
+                    tension: 0
+                }
+            ];
+            chart1.update();
+            
+            document.getElementById('explanation1').innerHTML = 
+                '<strong>📉 공급 증가 효과:</strong> 공급곡선이 우측으로 이동하면 <span class="highlight">가격↓, 수량↑</span> 현상이 발생합니다. 새로운 균형점은 (P=800원, Q=600개)가 됩니다.';
+        }
+
+        function showSurplusAnalysis() {
+            setActiveButton(document.querySelector('.graph-section'), event.target);
+            
+            // 잉여 영역을 표시하기 위한 데이터셋 추가
+            chart1.data.datasets = [
+                {
+                    label: '수요곡선 (D)',
+                    data: [2000, 1800, 1600, 1400, 1200, 1000, 800, 600, 400, 200, 0],
+                    borderColor: colors.demand,
+                    backgroundColor: 'transparent',
+                    borderWidth: 4,
+                    pointRadius: 0,
+                    tension: 0
+                },
+                {
+                    label: '공급곡선 (S)',
+                    data: [0, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000],
+                    borderColor: colors.supply,
+                    backgroundColor: 'transparent',
+                    borderWidth: 4,
+                    pointRadius: 0,
+                    tension: 0
+                },
+                {
+                    label: '소비자잉여',
+                    data: [1000, 1000, 1000, 1000, 1000, 1000, null, null, null, null, null],
+                    backgroundColor: colors.surplus,
+                    borderColor: 'transparent',
+                    fill: '+1',
+                    pointRadius: 0
+                }
+            ];
+            chart1.update();
+            
+            document.getElementById('explanation1').innerHTML = 
+                '<strong>💰 잉여 분석:</strong> <span class="highlight">소비자잉여</span> = 수요곡선과 균형가격 사이 면적, <span class="highlight">생산자잉여</span> = 공급곡선과 균형가격 사이 면적입니다. 총 사회잉여 = 125,000 + 125,000 = 250,000원';
+        }
+
+        // 2. 물품세 차트 조작 함수들
+        function showTaxEffect(level) {
+            const buttons = document.querySelectorAll('.graph-section')[1].querySelectorAll('.control-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const demandData = [2000, 1800, 1600, 1400, 1200, 1000, 800, 600, 400, 200, 0];
+            const supplyData = [0, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000];
+            
+            let datasets = [
+                {
+                    label: '수요곡선 (D)',
+                    data: demandData,
+                    borderColor: colors.demand,
+                    backgroundColor: 'transparent',
+                    borderWidth: 4,
+                    pointRadius: 0,
+                    tension: 0
+                },
+                {
+                    label: '공급곡선 (S₀)',
+                    data: supplyData,
+                    borderColor: colors.supply,
+                    backgroundColor: 'transparent',
+                    borderWidth: level === 'none' ? 4 : 2,
+                    pointRadius: 0,
+                    tension: 0,
+                    borderDash: level === 'none' ? [] : [5, 5]
+                }
+            ];
+            
+            let explanation = '';
+            
+            if (level === 'low') {
+                datasets.push({
+                    label: '공급곡선 (S₁) - 저율과세',
+                    data: supplyData.map(val => val + 200),
+                    borderColor: colors.tax,
+                    backgroundColor: 'transparent',
+                    borderWidth: 4,
+                    pointRadius: 0,
+                    tension: 0
+                });
+                explanation = '<strong>💰 저율 과세 (200원):</strong> 공급곡선이 200원만큼 위로 이동. 새로운 균형: P=1100원(소비자), P=900원(생산자), Q=450개';
+            } else if (level === 'high') {
+                datasets.push({
+                    label: '공급곡선 (S₁) - 고율과세',
+                    data: supplyData.map(val => val + 400),
+                    borderColor: colors.tax,
+                    backgroundColor: 'transparent',
+                    borderWidth: 4,
+                    pointRadius: 0,
+                    tension: 0
+                });
+                explanation = '<strong>💰 고율 과세 (400원):</strong> 공급곡선이 400원만큼 위로 이동. 새로운 균형: P=1200원(소비자), P=800원(생산자), Q=400개';
+            } else {
+                explanation = '<strong>🔍 과세 전 상태:</strong> 균형점 P=1000원, Q=500개에서 총 사회잉여는 최대가 됩니다.';
+            }
+            
+            chart2.data.datasets = datasets;
+            chart2.update();
+            
+            document.getElementById('explanation2').innerHTML = explanation;
+        }
+
+        function showDeadWeight() {
+            const buttons = document.querySelectorAll('.graph-section')[1].querySelectorAll('.control-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // 순손실 영역을 시각화
+            document.getElementById('explanation2').innerHTML = 
+                '<strong>⚠️ 경제적 순손실:</strong> 세금 부과로 인해 거래량이 500개→400개로 감소하면서 발생하는 <span class="highlight">사회적 총잉여의 순감소분</span>입니다. 삼각형 면적 = ½ × 100개 × 400원 = 20,000원';
+        }
+
+        // 3. 탄력성 차트 조작 함수들
+        function showElasticity(type) {
+            const buttons = document.querySelectorAll('.graph-section')[2].querySelectorAll('.control-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const supplyData = [0, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000];
+            let datasets = [];
+            let explanation = '';
+            
+            if (type === 'elastic') {
+                datasets = [
+                    {
+                        label: '탄력적 수요 (사치품)',
+                        data: [2000, 1600, 1200, 800, 400, 0, 0, 0, 0, 0, 0],
+                        borderColor: colors.demand,
+                        backgroundColor: 'transparent',
+                        borderWidth: 4,
+                        pointRadius: 0,
+                        tension: 0
+                    },
+                    {
+                        label: '공급곡선',
+                        data: supplyData,
+                        borderColor: colors.supply,
+                        backgroundColor: 'transparent',
+                        borderWidth: 4,
+                        pointRadius: 0,
+                        tension: 0
+                    }
+                ];
+                explanation = '<strong>🏃 탄력적 수요:</strong> 가격 변화에 민감하게 반응합니다. <span class="highlight">기울기가 완만</span>하며, 조세 부과 시 생산자가 더 많은 부담을 집니다.';
+            } else if (type === 'inelastic') {
+                datasets = [
+                    {
+                        label: '비탄력적 수요 (필수품)',
+                        data: [2000, 1900, 1800, 1700, 1600, 1500, 1400, 1300, 1200, 1100, 1000],
+                        borderColor: colors.demand,
+                        backgroundColor: 'transparent',
+                        borderWidth: 4,
+                        pointRadius: 0,
+                        tension: 0
+                    },
+                    {
+                        label: '공급곡선',
+                        data: supplyData,
+                        borderColor: colors.supply,
+                        backgroundColor: 'transparent',
+                        borderWidth: 4,
+                        pointRadius: 0,
+                        tension: 0
+                    }
+                ];
+                explanation = '<strong>🐌 비탄력적 수요:</strong> 가격 변화에 둔감하게 반응합니다. <span class="highlight">기울기가 급하며</span>, 조세 부과 시 소비자가 더 많은 부담을 집니다.';
+            } else {
+                datasets = [
+                    {
+                        label: '탄력적 수요',
+                        data: [2000, 1600, 1200, 800, 400, 0, 0, 0, 0, 0, 0],
+                        borderColor: colors.demand,
+                        backgroundColor: 'transparent',
+                        borderWidth: 4,
+                        pointRadius: 0,
+                        tension: 0
+                    },
+                    {
+                        label: '비탄력적 수요',
+                        data: [2000, 1900, 1800, 1700, 1600, 1500, 1400, 1300, 1200, 1100, 1000],
+                        borderColor: colors.demandAfter,
+                        backgroundColor: 'transparent',
+                        borderWidth: 4,
+                        pointRadius: 0,
+                        tension: 0
+                    },
+                    {
+                        label: '공급곡선',
+                        data: supplyData,
+                        borderColor: colors.supply,
+                        backgroundColor: 'transparent',
+                        borderWidth: 4,
+                        pointRadius: 0,
+                        tension: 0
+                    }
+                ];
+                explanation = '<strong>⚖️ 탄력성 비교:</strong> <span class="highlight">탄력적 수요는 완만한 기울기</span>, <span class="highlight">비탄력적 수요는 급한 기울기</span>를 가집니다. 조세 부담은 탄력성이 낮은 쪽이 더 많이 집니다.';
+            }
+            
+            chart3.data.datasets = datasets;
+            chart3.update();
+            
+            document.getElementById('explanation3').innerHTML = explanation;
+        }
+
+        // 페이지 로드 시 차트 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            initSupplyDemandChart();
+            initTaxChart();
+            initElasticityChart();
+        });
+    </script>
+</body>
+</html>
